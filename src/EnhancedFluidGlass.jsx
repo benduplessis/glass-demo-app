@@ -6,7 +6,6 @@ import {
   useFBO,
   useGLTF,
   useScroll,
-  Image,
   Scroll,
   Preload,
   ScrollControls,
@@ -15,11 +14,13 @@ import {
 } from '@react-three/drei'
 import { easing } from 'maath'
 
-export default function FluidGlass({
+export default function EnhancedFluidGlass({
   mode = 'lens',
   lensProps = {},
   barProps = {},
   cubeProps = {},
+  backgroundContent = null, // New prop for background content
+  backgroundColor = '#f8f9fa', // Fallback color
 }) {
   const Wrapper = mode === 'bar' ? Bar : mode === 'cube' ? Cube : Lens
   const rawOverrides =
@@ -43,8 +44,10 @@ export default function FluidGlass({
         {mode === 'bar' && <NavItems items={navItems} />}
         <Wrapper modeProps={modeProps}>
           <Scroll>
-            <Typography />
-            <Images />
+            <BackgroundRenderer 
+              backgroundContent={backgroundContent} 
+              backgroundColor={backgroundColor}
+            />
           </Scroll>
           <Scroll html />
           <Preload />
@@ -72,9 +75,11 @@ const ModeWrapper = memo(function ModeWrapper({
 
   useEffect(() => {
     const geo = nodes[geometryKey]?.geometry
-    geo.computeBoundingBox()
-    geoWidthRef.current =
-      geo.boundingBox.max.x - geo.boundingBox.min.x || 1
+    if (geo) {
+      geo.computeBoundingBox()
+      geoWidthRef.current =
+        geo.boundingBox.max.x - geo.boundingBox.min.x || 1
+    }
   }, [nodes, geometryKey])
 
   useFrame((state, delta) => {
@@ -99,8 +104,8 @@ const ModeWrapper = memo(function ModeWrapper({
     gl.render(scene, camera)
     gl.setRenderTarget(null)
 
-    // Background Color
-    gl.setClearColor(0x5227ff, 1)
+    // Enhanced background color with better contrast
+    gl.setClearColor(0xf8f9fa, 0.95)
   })
 
   const {
@@ -263,24 +268,71 @@ function NavItems({ items }) {
   )
 }
 
-function Images() {
+// New component to render background content instead of just images
+function BackgroundRenderer({ backgroundContent, backgroundColor }) {
   const group = useRef()
   const data = useScroll()
-  const { height } = useThree((s) => s.viewport)
+  const { height, width } = useThree((s) => s.viewport)
 
   useFrame(() => {
     if (group.current.children[0]) {
-      group.current.children[0].material.zoom = 1 + data.range(0, 1) / 3
+      // Create a subtle zoom effect based on scroll
+      const zoomFactor = 1 + data.range(0, 1) / 10 // More subtle zoom
+      group.current.scale.setScalar(zoomFactor)
+      
+      // Add subtle rotation for dynamic feel
+      group.current.rotation.z = data.range(0, 1) * 0.05
     }
   })
 
   return (
     <group ref={group}>
-      <Image
-        position={[0, 0, 0]}
-        scale={[6, height, 1]}
-        url="/assets/images/background.jpg"  // Replace with your image
-      />
+      {/* Background plane */}
+      <mesh position={[0, 0, -1]} scale={[width * 2, height * 2, 1]}>
+        <planeGeometry />
+        <meshBasicMaterial 
+          color={backgroundColor} 
+          transparent 
+          opacity={0.8}
+        />
+      </mesh>
+      
+      {/* Gradient overlay for depth */}
+      <mesh position={[0, 0, -0.5]} scale={[width * 1.5, height * 1.5, 1]}>
+        <planeGeometry />
+        <meshBasicMaterial 
+          transparent 
+          opacity={0.3}
+        >
+          <meshBasicMaterial attach="material" transparent>
+            <primitive 
+              attach="map" 
+              object={(() => {
+                const canvas = document.createElement('canvas')
+                canvas.width = 512
+                canvas.height = 512
+                const ctx = canvas.getContext('2d')
+                
+                // Create radial gradient
+                const gradient = ctx.createRadialGradient(256, 256, 0, 256, 256, 256)
+                gradient.addColorStop(0, 'rgba(135, 206, 235, 0.2)')
+                gradient.addColorStop(0.5, 'rgba(173, 216, 230, 0.15)')
+                gradient.addColorStop(1, 'rgba(255, 182, 193, 0.1)')
+                
+                ctx.fillStyle = gradient
+                ctx.fillRect(0, 0, 512, 512)
+                
+                const texture = new THREE.CanvasTexture(canvas)
+                texture.needsUpdate = true
+                return texture
+              })()} 
+            />
+          </meshBasicMaterial>
+        </meshBasicMaterial>
+      </mesh>
+      
+      {/* Optional: Render custom background content */}
+      {backgroundContent}
     </group>
   )
 }
@@ -308,8 +360,6 @@ function Typography() {
     return () => window.removeEventListener('resize', onResize)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  const { fontSize } = DEVICE[device]
 
   return null
 }

@@ -1,0 +1,269 @@
+/* Water Blob Background Component */
+.water-blob-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+  }
+  
+  .blob-base {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef, #dee2e6);
+  }
+  
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    will-change: transform;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+  }
+  
+  .blob-1 {
+    width: 400px;
+    height: 300px;
+    top: 10%;
+    left: 15%;
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    animation-name: morphBlob1;
+  }
+  
+  .blob-2 {
+    width: 350px;
+    height: 450px;
+    top: 40%;
+    right: 10%;
+    border-radius: 30% 60% 70% 40% / 50% 60% 40% 50%;
+    animation-name: morphBlob2;
+  }
+  
+  .blob-3 {
+    width: 300px;
+    height: 300px;
+    bottom: 20%;
+    left: 20%;
+    border-radius: 70% 30% 50% 50% / 30% 70% 30% 70%;
+    animation-name: morphBlob3;
+  }
+  
+  .blob-4 {
+    width: 500px;
+    height: 200px;
+    top: 60%;
+    right: 30%;
+    border-radius: 40% 60% 60% 40% / 70% 30% 70% 30%;
+    animation-name: morphBlob4;
+  }
+  
+  .blob-5 {
+    width: 250px;
+    height: 350px;
+    top: 5%;
+    right: 5%;
+    border-radius: 50% 50% 30% 70% / 60% 40% 60% 40%;
+    animation-name: morphBlob5;
+  }
+  
+  .blob-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, 
+      rgba(255, 255, 255, 0.1) 0%, 
+      transparent 30%, 
+      rgba(255, 107, 203, 0.02) 70%, 
+      transparent 100%
+    );
+    pointer-events: none;
+  }
+  
+  /* Blob Animations */
+  @keyframes morphBlob1 {
+    0% {
+      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+      transform: translate(0px, 0px) rotate(0deg) scale(1);
+    }
+    33% {
+      border-radius: 30% 60% 70% 40% / 50% 60% 40% 50%;
+      transform: translate(-20px, -30px) rotate(120deg) scale(1.1);
+    }
+    66% {
+      border-radius: 70% 30% 50% 50% / 30% 70% 30% 70%;
+      transform: translate(20px, -15px) rotate(240deg) scale(0.95);
+    }
+    100% {
+      border-radius: 40% 60% 60% 40% / 70% 30% 70% 30%;
+      transform: translate(0px, -20px) rotate(360deg) scale(1.05);
+    }
+  }
+  
+  @keyframes morphBlob2 {
+    0% {
+      border-radius: 30% 60% 70% 40% / 50% 60% 40% 50%;
+      transform: translate(0px, 0px) rotate(0deg) scale(1);
+    }
+    25% {
+      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+      transform: translate(25px, 15px) rotate(90deg) scale(1.08);
+    }
+    50% {
+      border-radius: 50% 50% 30% 70% / 60% 40% 60% 40%;
+      transform: translate(-15px, 25px) rotate(180deg) scale(0.92);
+    }
+    75% {
+      border-radius: 70% 30% 50% 50% / 30% 70% 30% 70%;
+      transform: translate(10px, -20px) rotate(270deg) scale(1.12);
+    }
+    100% {
+      border-radius: 40% 60% 60% 40% / 70% 30% 70% 30%;
+      transform: translate(0px, 10px) rotate(360deg) scale(0.98);
+    }
+  }
+  
+  @keyframes morphBlob3 {
+    0% {
+      border-radius: 70% 30% 50% 50% / 30% 70% 30% 70%;
+      transform: translate(0px, 0px) rotate(0deg) scale(1);
+    }
+    40% {
+      border-radius: 40% 60% 60% 40% / 70% 30% 70% 30%;
+      transform: translate(-30px, 10px) rotate(144deg) scale(1.15);
+    }
+    80% {
+      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+      transform: translate(15px, -25px) rotate(288deg) scale(0.88);
+    }
+    100% {
+      border-radius: 30% 60% 70% 40% / 50% 60% 40% 50%;
+      transform: translate(5px, 15px) rotate(360deg) scale(1.03);
+    }
+  }
+  
+  @keyframes morphBlob4 {
+    0% {
+      border-radius: 40% 60% 60% 40% / 70% 30% 70% 30%;
+      transform: translate(0px, 0px) rotate(0deg) scale(1);
+    }
+    30% {
+      border-radius: 50% 50% 30% 70% / 60% 40% 60% 40%;
+      transform: translate(20px, -15px) rotate(108deg) scale(0.95);
+    }
+    60% {
+      border-radius: 70% 30% 50% 50% / 30% 70% 30% 70%;
+      transform: translate(-25px, 20px) rotate(216deg) scale(1.08);
+    }
+    100% {
+      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+      transform: translate(10px, 5px) rotate(360deg) scale(1.02);
+    }
+  }
+  
+  @keyframes morphBlob5 {
+    0% {
+      border-radius: 50% 50% 30% 70% / 60% 40% 60% 40%;
+      transform: translate(0px, 0px) rotate(0deg) scale(1);
+    }
+    50% {
+      border-radius: 30% 60% 70% 40% / 50% 60% 40% 50%;
+      transform: translate(-18px, 22px) rotate(180deg) scale(1.12);
+    }
+    100% {
+      border-radius: 70% 30% 50% 50% / 30% 70% 30% 70%;
+      transform: translate(12px, -18px) rotate(360deg) scale(0.93);
+    }
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .blob-1 {
+      width: 280px;
+      height: 210px;
+      top: 15%;
+      left: 10%;
+    }
+    
+    .blob-2 {
+      width: 245px;
+      height: 315px;
+      top: 45%;
+      right: 5%;
+    }
+    
+    .blob-3 {
+      width: 210px;
+      height: 210px;
+      bottom: 25%;
+      left: 15%;
+    }
+    
+    .blob-4 {
+      width: 350px;
+      height: 140px;
+      top: 65%;
+      right: 25%;
+    }
+    
+    .blob-5 {
+      width: 175px;
+      height: 245px;
+      top: 8%;
+      right: 8%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .blob-1 {
+      width: 200px;
+      height: 150px;
+    }
+    
+    .blob-2 {
+      width: 175px;
+      height: 225px;
+    }
+    
+    .blob-3 {
+      width: 150px;
+      height: 150px;
+    }
+    
+    .blob-4 {
+      width: 250px;
+      height: 100px;
+    }
+    
+    .blob-5 {
+      width: 125px;
+      height: 175px;
+    }
+  }
+  
+  /* Performance optimizations */
+  @media (prefers-reduced-motion: reduce) {
+    .blob {
+      animation-duration: 20s !important;
+      animation-timing-function: linear !important;
+    }
+  }
+  
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    .blob-overlay {
+      background: linear-gradient(45deg, 
+        rgba(0, 0, 0, 0.1) 0%, 
+        transparent 30%, 
+        rgba(0, 0, 0, 0.05) 70%, 
+        transparent 100%
+      );
+    }
+  }

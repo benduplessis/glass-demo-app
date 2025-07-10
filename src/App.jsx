@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import LandingPage from './LandingPage';
-import FormPage from './FormPage';
+import LandingPage from './LandingPage';  // No extension needed
+import FormPage from './FormPage';        // No extension needed
 
 function App() {
   return (
